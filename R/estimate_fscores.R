@@ -16,10 +16,10 @@
 #' Otherwise a simple CFA model will be estimated.
 #' @returns an Mplus model object, see [MplusAutomation::mplusModeler]
 estimate_fscores <- function(data, name) {
+  itemsNames <- grep("^i", names(data), value = TRUE)
   model <- MplusAutomation::mplusObject(
     TITLE = paste("Unidimensional CFA:", name),
-    VARIABLE = paste0("USEVAR = ", paste(grep("^i", names(data), value = TRUE),
-                                         collapse = " "), ";
+    VARIABLE = paste0("USEVAR = ", itemsNames[1], "-", itemsNames[length(itemsNames)], ";
 ",
                       ifelse("gr" %in% names(data),
                              paste0("CLASSES = g(", length(unique(data$gr)), ");
@@ -32,18 +32,14 @@ PROCESSORS = 8;
 "),
   MODEL = ifelse("gr" %in% names(data),
                  paste0("%OVERALL%
-  ", name, " by ", sub(" ", "* ",
-                       paste(grep("^i", names(data), value = TRUE),
-                             collapse = " ")), ";
+  ", name, " by ", itemsNames[1], "-", itemsNames[length(itemsNames)], "*;
   [", name, "*];
   ", name, "*;
 %g#1%
   [", name, "@0];
   ", name, "@1;
 "),
-                       paste0(name, " by ", sub(" ", "* ",
-                       paste(grep("^i", names(data), value = TRUE),
-                             collapse = " ")), ";
+                       paste0(name, " by ", itemsNames[1], "-", itemsNames[length(itemsNames)], "*;
 ", name, "@1;
 ")),
   SAVEDATA = "FILE IS fscores.dat;
