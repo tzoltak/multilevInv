@@ -82,7 +82,8 @@ run_simulation <- function(conditions, nIterPerCond, suffix = "",
   for (i in seq_len(nrow(conditions))) {
     cat("\n###########################################################################\n Simulation iteration ",
         conditions$iter[i], " (out of ", nIterPerCond,
-        "),\n condition number ", i %% nCond, " (out of ", nCond,")\n\n",
+        "),\n condition number ", ifelse((i %% nCond) == 0, nCond, i %% nCond),
+        " (out of ", nCond,")\n\n",
         sep = "")
     print(as.data.frame(conditions[i, get_required_conditions_names()]), row.names = FALSE)
 
