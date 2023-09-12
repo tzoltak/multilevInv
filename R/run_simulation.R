@@ -186,8 +186,8 @@ run_simulation <- function(conditions, nIterPerCond, suffix = "",
       startTime <- Sys.time()
       fscores <- cbind(
         data[, c("gr", "w")],
-        estimate_fscores(data[, grep("(^ix1)|^gr$", names(data))], "x1"),
-        estimate_fscores(data[, grep("(^ix2)|^gr$", names(data))], "x2"),
+        estimate_fscores(data[, grep("(^ix1)", names(data))], "x1"),
+        estimate_fscores(data[, grep("(^ix2)", names(data))], "x2"),
         estimate_fscores(data[, grep("(^iy)|^gr$", names(data))], "y"))
       cat("  ", lasted(startTime), "\n", sep = "")
       if (!all(c("x1", "x2", "y") %in% names(fscores))) {
